@@ -1,0 +1,19 @@
+- name: Build node on a new machine
+  hosts:
+    - stage
+  become: yes
+  pre_tasks:
+    - name: Add global variables
+      include_vars:
+        file: "{{ playbook_dir }}/config-root.yml"
+  roles:
+    - certbot
+    - docker
+    - nginx
+  tasks:
+    - name: reset ssh connection
+      meta: reset_connection
+  vars:
+    docker_users:
+      - "{{ ansible_user }}"
+    docker_install_compose: true

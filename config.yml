@@ -1,0 +1,83 @@
+validator_node:
+  caption: "validator"
+  min_retain_blocks: 100
+  api_enable: "true"
+  grpc_enable: "true"
+  enabled_unsafe_cors: "false"
+  cors_allowed_origins: '[]'
+  fast_sync_version: "v2"
+  addr_book_strict: "false"
+  allow_duplicate_ip: "false"
+  create_empty_blocks: "false"
+  create_empty_blocks_interval: "60s"
+  tcp_port: 1317
+  grpc_port: 9090
+  proxy_port: 26658
+  rpc_port: 26657
+  p2p_port: 26656
+  pprof_port: 6060
+  pex: "false"
+  seeds: "{{ seeds }}"
+  seed_mode: "false"
+  ssl: false
+  pruning:
+    recent: 50
+    every: 100000
+    interval: 10
+sentery_node:
+  caption: "sentery"
+  min_retain_blocks: 0
+  api_enable: "true"
+  grpc_enable: "true"
+  enabled_unsafe_cors: "true"
+  cors_allowed_origins: '["*"]'
+  fast_sync_version: "v2"
+  addr_book_strict: "false"
+  allow_duplicate_ip: "false"
+  create_empty_blocks: "false"
+  create_empty_blocks_interval: "60s"
+  tcp_port: 1317
+  grpc_port: 9090
+  proxy_port: 26658
+  rpc_port: 26657
+  p2p_port: 26656
+  pprof_port: 6060
+  pex: "true"
+  seeds: "{{ seeds }}"
+  seed_mode: "false"
+  ssl: "{{ host_type == 'public' }}"
+  pruning:
+    recent: 50
+    every: 1000
+    interval: 100
+seed_node:
+  caption: "seed"
+  min_retain_blocks: 100
+  api_enable: "true"
+  grpc_enable: "true"
+  enabled_unsafe_cors: "false"
+  cors_allowed_origins: '["*"]'
+  fast_sync_version: "v2"
+  addr_book_strict: "false"
+  allow_duplicate_ip: "false"
+  create_empty_blocks: "false"
+  create_empty_blocks_interval: "60s"
+  tcp_port: 1317
+  grpc_port: 9090
+  proxy_port: 26658
+  rpc_port: 26657
+  p2p_port: 26656
+  pprof_port: 6060
+  pex: "true"
+  seeds: "{{ seeds }}"
+  seed_mode: "true"
+  ssl: "{{ host_type == 'public' }}"
+  pruning:
+    recent: 10
+    every: 100000
+    interval: 10
+seed_export:
+  tcp_port: 1417
+  rpc_port: 26757
+  p2p_port: 26756
+project_dir: "/var/meta-cr/sources"

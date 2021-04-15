@@ -1,0 +1,12 @@
+# Local configs
+secret.yml
+
+# os specific files
+.DS_Store
+Vagrantfile
+
+#Build
+config-root.yml
+ansible/inventory
+ansible/hosts
+
