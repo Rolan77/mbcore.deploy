@@ -18,10 +18,11 @@ jobs:
         with: 
           repository: markvandal/metabelarus.core.cr
           ref: build
+      - run: mkdir docker
       - name: checkout Docerfile
         uses: actions/checkout@v2
         with:
-          path: .
+          path: docker
       # Runs a single command using the runners shell
       - name: Run a one-line script
         run: ls -la
