@@ -14,9 +14,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-        with: build
+        with: 
           repository: markvandal/metabelarus.core.cr
-          ref:
+          ref: build
       # Runs a single command using the runners shell
       - name: Run a one-line script
         run: ls -la

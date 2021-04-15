@@ -13,10 +13,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - name: checkout from mark
+        uses: actions/checkout@v2
         with: 
           repository: markvandal/metabelarus.core.cr
           ref: build
+      - name: checkout Docerfile
+        uses: actions/checkout@v2
+    
       # Runs a single command using the runners shell
       - name: Run a one-line script
         run: ls -la
