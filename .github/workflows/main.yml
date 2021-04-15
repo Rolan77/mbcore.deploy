@@ -20,8 +20,8 @@ jobs:
           ref: build
       - name: checkout Docerfile
         uses: actions/checkout@v2
-          with:
-            path: .
+        with:
+          path: .
       # Runs a single command using the runners shell
       - name: Run a one-line script
         run: ls -la
