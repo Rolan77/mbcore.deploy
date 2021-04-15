@@ -41,4 +41,4 @@ jobs:
           context: .
           file: docker/Dockerfile
           push: true
-          tags: gordon77/mbcore:latest
+          tags: gordon77/mbcorecrnode:latest
