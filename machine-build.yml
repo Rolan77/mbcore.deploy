@@ -3,16 +3,20 @@
     - stage
   become: yes
   pre_tasks:
-    - name: Add global variables
-      include_vars:
-        file: "{{ playbook_dir }}/config-root.yml"
+    - name: Install required system packages
+      apt: name=python3-pip state=latest update_cache=yes
+    - name: Install Docker Module for Python
+      pip:
+        name: docker
   roles:
     - certbot
     - docker
     - nginx
-  tasks:
-    - name: reset ssh connection
-      meta: reset_connection
+  post_tasks:
+    - name: Pull docker image
+      community.docker.docker_image:
+        name: gordon77/mbcorecrnode:latest
+        source: pull
   vars:
     docker_users:
       - "{{ ansible_user }}"

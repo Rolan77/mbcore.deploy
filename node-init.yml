@@ -1,0 +1,17 @@
+- name: init node on a new machine
+  hosts:
+    - stage
+  pre_tasks:
+    - name: Add global variables
+      include_vars:
+        file: "{{ playbook_dir }}/{{ item }}"
+      with_items:
+      - config.yml
+      - config-root.yml  
+  tags:
+    - configs
+  roles:
+    - init
+  post_tasks:
+    - name: reset ssh connection
+      meta: reset_connection

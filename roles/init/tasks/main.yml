@@ -1,0 +1,14 @@
+---
+- name: Remove a volume if exist
+  community.docker.docker_volume:
+    name: "{{ node_volume_name }}"
+    state: absent
+- name: init node in container
+  community.docker.docker_container:
+    name: "{{ node_container_name }}"
+    image: gordon77/mbcorecrnode:latest
+    command: mbcorecrd init node.main --chain-id mychain --overwrite --home /var/node/
+    auto_remove: yes
+    volumes:
+    - "{{ node_volume_name }}:/var/node"
+

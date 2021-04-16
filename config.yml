@@ -80,4 +80,4 @@ seed_export:
   tcp_port: 1417
   rpc_port: 26757
   p2p_port: 26756
-project_dir: "/var/meta-cr/sources"
+project_dir: "/var/meta-cr"
