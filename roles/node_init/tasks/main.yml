@@ -1,5 +1,10 @@
 ---
 - 
+  name: Tear down existing services
+  docker_compose:
+    project_src: /var/mbcore/
+    state: absent
+- 
   name: Remove a volume if exist
   community.docker.docker_volume:
     name: "{{ node.caption }}_volume"

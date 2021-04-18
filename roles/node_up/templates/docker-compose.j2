@@ -24,12 +24,11 @@ services:
     ports:
       - "{{ sentery_node.p2p_port }}:{{ sentery_node.p2p_port }}"
       - "{{ sentery_node.rpc_port }}:{{ sentery_node.rpc_port }}"
-{% if domain != "localhost" %}  
   seed:
     image: gordon77/mbcorecrnode:latest
     container_name: seed
     command: "mbcorecrd start \
-              --p2p.persistent_peers {{ sentery_id }}@{{ domain }}:{{ sentery_node.p2p_port }} \
+              --p2p.persistent_peers {{ sentery_id }}@sentery:{{ sentery_node.p2p_port }} \
               --p2p.unconditional_peer_ids {{ sentery_id }}"
     restart: always
     volumes:
@@ -37,10 +36,8 @@ services:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     ports:
-      - "{{ seed_node.seed_export.tcp_port }}:{{ seed_node.tcp_port }}"
-      - "{{ seed_node.seed_export.p2p_port }}:{{ seed_node.p2p_port }}"
-      - "{{ seed_node.seed_export.rpc_port }}:{{ seed_node.rpc_port }}"
-{% endif %}
+      - "{{ seed_node.tcp_port }}:{{ seed_node.tcp_port }}"
+      
 volumes:
   validator_volume:
     external: true

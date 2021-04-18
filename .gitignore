@@ -4,7 +4,7 @@ secret.yml
 # os specific files
 .DS_Store
 Vagrantfile
-
+.vagrant
 #Build
 config-root.yml
 ansible/inventory
