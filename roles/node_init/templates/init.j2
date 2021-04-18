@@ -1,0 +1,18 @@
+#!/bin/sh
+#create jenesis
+set -e
+
+#Create genesis validator account 
+(echo "{{ mainuser_mnemonic }}"; echo "{{ keyring_pass }}"; echo "{{ keyring_pass }}") | \
+mbcorecrd keys add mainuser --hd-path "44'/118'/0'/0/0" --home /var/node/ --keyring-backend file --recover
+#Create genesis validator
+(echo "{{ keyring_pass }}") | mbcorecrd add-genesis-account $(mbcorecrd keys show mainuser -a --home /var/node --keyring-backend file) \
+    100000000stake,20invitesuper,50invite0,50invite1,150invite2,150invite3 --home /var/node 
+#Generate genesis transaction
+(echo "{{ keyring_pass }}") | \
+mbcorecrd gentx mainuser --from mainuser --chain-id "{{ chainid }}" --amount "{{ amount_to_delegate }}" \
+--keyring-backend file --home /var/node -y
+#Collect genesis
+mbcorecrd collect-gentxs --home /var/node
+#Copy genesis file to other nodes
+

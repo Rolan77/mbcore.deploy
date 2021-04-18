@@ -2,18 +2,40 @@
   hosts:
     - stage
   become: yes
-  pre_tasks:
-    - name: Install required system packages
+  tasks:
+    - 
+      name: Add global variables
+      include_vars:
+        file: "{{ playbook_dir }}/{{ item }}"
+      with_items:
+      - config.yml
+      - config-root.yml  
+    -
+      name: Install required system packages
       apt: name=python3-pip state=latest update_cache=yes
-    - name: Install Docker Module for Python
+    -
+      name: Install Docker Module for Python
       pip:
+        name: 
+          - docker 
+          - docker-compose
+    - 
+      name: Install docker  
+      include_role:
         name: docker
-  roles:
-    - certbot
-    - docker
-    - nginx
-  post_tasks:
-    - name: Pull docker image
+    -
+      name: Install certbot
+      include_role:
+        name: certbot
+      when: host_type == "public"
+    -
+      name: install nginx
+      include_role:
+        name: nginx
+      when: host_type == "public"
+   
+    -
+      name: Pull docker image
       community.docker.docker_image:
         name: gordon77/mbcorecrnode:latest
         source: pull

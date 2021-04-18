@@ -1,0 +1,51 @@
+version: "3.7"
+services:
+  validator:
+    image: gordon77/mbcorecrnode:latest
+    container_name: validator
+    command: "mbcorecrd start"
+    restart: always
+    volumes:
+      - validator_volume:/root/.mbcorecr
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+  sentery:
+    image: gordon77/mbcorecrnode:latest
+    container_name: sentery
+    command: "mbcorecrd start \
+              --p2p.persistent_peers {{ validator_id }}@validator:{{ validator_node.p2p_port }} \
+              --p2p.private_peer_ids {{ validator_id }} \
+              --p2p.unconditional_peer_ids {{ validator_id }}"
+    restart: always
+    volumes:
+      - sentery_volume:/root/.mbcorecr
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - "{{ sentery_node.p2p_port }}:{{ sentery_node.p2p_port }}"
+      - "{{ sentery_node.rpc_port }}:{{ sentery_node.rpc_port }}"
+{% if domain != "localhost" %}  
+  seed:
+    image: gordon77/mbcorecrnode:latest
+    container_name: seed
+    command: "mbcorecrd start \
+              --p2p.persistent_peers {{ sentery_id }}@{{ domain }}:{{ sentery_node.p2p_port }} \
+              --p2p.unconditional_peer_ids {{ sentery_id }}"
+    restart: always
+    volumes:
+      - seed_volume:/root/.mbcorecr
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - "{{ seed_node.seed_export.tcp_port }}:{{ seed_node.tcp_port }}"
+      - "{{ seed_node.seed_export.p2p_port }}:{{ seed_node.p2p_port }}"
+      - "{{ seed_node.seed_export.rpc_port }}:{{ seed_node.rpc_port }}"
+{% endif %}
+volumes:
+  validator_volume:
+    external: true
+  sentery_volume:
+    external: true
+  seed_volume:
+    external: true
+

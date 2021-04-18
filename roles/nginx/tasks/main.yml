@@ -1,11 +1,3 @@
-- name: Add global variables
-  include_vars:
-    file: "{{ playbook_dir }}/config.yml"
-  tags:
-    - install
-    - ubuntu
-    - nginx
-
 - name: Install nginx
   apt: 
     name: nginx 

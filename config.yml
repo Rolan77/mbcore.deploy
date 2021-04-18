@@ -4,7 +4,7 @@ validator_node:
   api_enable: "true"
   grpc_enable: "true"
   enabled_unsafe_cors: "false"
-  cors_allowed_origins: '[]'
+  cors_allowed_origins: "cors_allowed_origins =  [ ]"
   fast_sync_version: "v2"
   addr_book_strict: "false"
   allow_duplicate_ip: "false"
@@ -24,13 +24,15 @@ validator_node:
     recent: 50
     every: 100000
     interval: 10
+  seed_export:
+    p2p_port: 26656
 sentery_node:
   caption: "sentery"
   min_retain_blocks: 0
   api_enable: "true"
   grpc_enable: "true"
   enabled_unsafe_cors: "true"
-  cors_allowed_origins: '["*"]'
+  cors_allowed_origins:  'cors_allowed_origins =  ["*"]'
   fast_sync_version: "v2"
   addr_book_strict: "false"
   allow_duplicate_ip: "false"
@@ -50,13 +52,15 @@ sentery_node:
     recent: 50
     every: 1000
     interval: 100
+  seed_export:
+    p2p_port: 26656
 seed_node:
   caption: "seed"
   min_retain_blocks: 100
   api_enable: "true"
   grpc_enable: "true"
   enabled_unsafe_cors: "false"
-  cors_allowed_origins: '["*"]'
+  cors_allowed_origins: 'cors_allowed_origins =  ["*"]'
   fast_sync_version: "v2"
   addr_book_strict: "false"
   allow_duplicate_ip: "false"
@@ -76,8 +80,8 @@ seed_node:
     recent: 10
     every: 100000
     interval: 10
-seed_export:
-  tcp_port: 1417
-  rpc_port: 26757
-  p2p_port: 26756
+  seed_export:
+    tcp_port: 1417
+    rpc_port: 26757
+    p2p_port: 26756
 project_dir: "/var/meta-cr"

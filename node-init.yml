@@ -1,17 +1,26 @@
-- name: init node on a new machine
+- name: init node on a machine
   hosts:
     - stage
-  pre_tasks:
+  tasks:
     - name: Add global variables
       include_vars:
         file: "{{ playbook_dir }}/{{ item }}"
       with_items:
       - config.yml
       - config-root.yml  
-  tags:
-    - configs
-  roles:
-    - init
-  post_tasks:
+      tags:
+        - configs
+    - name: init nodes
+      with_items:
+        - "{{ validator_node }}"
+        - "{{ sentery_node }}"
+        - "{{ seed_node }}"
+      vars:
+        - node: "{{ item }}"
+      include_role:
+        name: node_init
+    - name: up service
+      include_role:
+        name: node_up
     - name: reset ssh connection
       meta: reset_connection

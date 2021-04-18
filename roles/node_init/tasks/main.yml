@@ -1,0 +1,71 @@
+---
+- 
+  name: Remove a volume if exist
+  community.docker.docker_volume:
+    name: "{{ node.caption }}_volume"
+    state: absent
+- 
+  name: init node in container
+  community.docker.docker_container:
+    name: "{{ node.caption }}_container"
+    container_default_behavior: no_defaults
+    image: gordon77/mbcorecrnode:latest
+    command: "mbcorecrd init node.main --chain-id {{ chainid }} --overwrite --home /var/node/"
+    auto_remove: yes
+    volumes:
+    - "{{ node.caption }}_volume:/var/node"
+- 
+  name: Copy app.toml to volume
+  template:
+    src: config/app.j2
+    dest: "/var/lib/docker/volumes/{{ node.caption }}_volume/_data/config/app.toml"
+  become: true
+  vars:
+    template_node: "{{ node }}"
+- 
+  name: Copy config.toml to volume
+  template:
+    src: config/config.j2
+    dest: "/var/lib/docker/volumes/{{ node.caption }}_volume/_data/config/config.toml"
+  become: true
+  vars:
+    template_node: "{{ node }}"
+    
+# create genesis file for root node
+- block:
+  - 
+    name: Create a directory if it does not exist
+    ansible.builtin.file:
+      path: /var/init
+      state: directory
+      mode: '0755'
+    become: yes
+  - 
+    name: copy init.sh
+    template:
+      src: init.j2
+      dest: /var/init/init.sh
+      mode: '755'
+    become: yes
+  - 
+    name: init node in container
+    community.docker.docker_container:
+      container_default_behavior: no_defaults
+      name: "{{ node.caption }}_container"
+      image: gordon77/mbcorecrnode:latest
+      command: /root/init/init.sh
+      auto_remove: yes
+      volumes:
+      - "{{ node.caption }}_volume:/var/node"   
+      - /var/init/:/root/init/
+ 
+  when: is_validator_root and node.caption == "validator"
+  
+- name: Copy genesis file to other nodes
+  copy:
+    src: "/var/lib/docker/volumes/validator_volume/_data/config/genesis.json"
+    remote_src: yes
+    dest: "/var/lib/docker/volumes/{{ node.caption }}_volume/_data/config/genesis.json"
+  become: true
+  when: node.caption != "validator"
+    
