@@ -5,8 +5,10 @@ secret.yml
 .DS_Store
 Vagrantfile
 .vagrant
-#Build
 config-root.yml
 ansible/inventory
 ansible/hosts
+.terraform
+*.tfstate
+*.tfstate.backup
 
