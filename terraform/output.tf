@@ -12,5 +12,5 @@ resource "local_file" "AnsibleInventory" {
   bastion-id = aws_instance.bastion.id,
  }
  )
- filename = "../inventory/host_vars/stage_aws.yml"
+ filename = "../ansible/inventory/host_vars/stage_aws.yml"
 }

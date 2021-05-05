@@ -19,6 +19,16 @@
     - certbot
     - nginx
 
+- name: Copy nginx.https.conf
+  template:
+    src: nginx.https.conf
+    dest: /etc/nginx/sites-available/default
+  when: host_type == "public"
+  tags:
+    - start
+    - ubuntu
+    - nginx
+
 - name: start nginx
   service:
     name: nginx
@@ -27,3 +37,7 @@
     - init
     - ubuntu
     - nginx
+
+- name: Check that you can connect (GET) to server by https  and it returns a status 200
+  uri:
+    url: "https://{{ domain }}"

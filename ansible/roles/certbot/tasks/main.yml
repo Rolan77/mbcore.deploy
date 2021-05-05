@@ -1,4 +1,4 @@
-- name: Install Snap
+- name: Ensure snapd is installed.
   apt:
     name: snapd
     state: present
@@ -7,6 +7,11 @@
     - install
     - ubuntu
     - certbot
+
+- name: Ensure snapd is enabled.
+  systemd:
+    name: snapd.socket
+    enabled: true
 
 - name: Update Snap
   shell:
@@ -43,4 +48,3 @@
     - install
     - ubuntu
     - certbot
-
