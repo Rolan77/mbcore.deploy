@@ -37,7 +37,3 @@
     - init
     - ubuntu
     - nginx
-
-- name: Check that you can connect (GET) to server by https  and it returns a status 200
-  uri:
-    url: "https://{{ domain }}"

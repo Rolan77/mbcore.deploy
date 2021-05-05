@@ -1,15 +1,22 @@
 ---
-- 
+# Расчищаем поляну
+-
+  name: Check that the docker-compose.yml exists
+  stat:
+    path: /var/mbcore/docker-compose.yml
+  register: stat_result
+-
   name: Tear down existing services
   docker_compose:
     project_src: /var/mbcore/
     state: absent
-- 
+  when: stat_result.stat.exists
+-
   name: Remove a volume if exist
   community.docker.docker_volume:
     name: "{{ node.caption }}_volume"
     state: absent
-- 
+-
   name: init node in container
   community.docker.docker_container:
     name: "{{ node.caption }}_container"
@@ -19,7 +26,7 @@
     auto_remove: yes
     volumes:
     - "{{ node.caption }}_volume:/var/node"
-- 
+-
   name: Copy app.toml to volume
   template:
     src: config/app.j2
@@ -27,7 +34,7 @@
   become: true
   vars:
     template_node: "{{ node }}"
-- 
+-
   name: Copy config.toml to volume
   template:
     src: config/config.j2
@@ -35,24 +42,24 @@
   become: true
   vars:
     template_node: "{{ node }}"
-    
-# create genesis file for root node
+
+# create genesis file for root node validator
 - block:
-  - 
+  -
     name: Create a directory if it does not exist
     ansible.builtin.file:
       path: /var/init
       state: directory
       mode: '0755'
     become: yes
-  - 
+  -
     name: copy init.sh
     template:
       src: init.j2
       dest: /var/init/init.sh
       mode: '755'
     become: yes
-  - 
+  -
     name: init node in container
     community.docker.docker_container:
       container_default_behavior: no_defaults
@@ -61,11 +68,10 @@
       command: /root/init/init.sh
       auto_remove: yes
       volumes:
-      - "{{ node.caption }}_volume:/var/node"   
+      - "{{ node.caption }}_volume:/var/node"
       - /var/init/:/root/init/
- 
   when: is_validator_root and node.caption == "validator"
-  
+
 - name: Copy genesis file to other nodes
   copy:
     src: "/var/lib/docker/volumes/validator_volume/_data/config/genesis.json"
@@ -73,4 +79,3 @@
     dest: "/var/lib/docker/volumes/{{ node.caption }}_volume/_data/config/genesis.json"
   become: true
   when: node.caption != "validator"
-    

@@ -66,7 +66,7 @@ seed_node:
   allow_duplicate_ip: "false"
   create_empty_blocks: "false"
   create_empty_blocks_interval: "60s"
-  tcp_port: 1317
+  tcp_port: 1417
   grpc_port: 9090
   proxy_port: 26658
   rpc_port: 26657
