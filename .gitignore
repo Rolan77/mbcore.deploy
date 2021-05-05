@@ -6,9 +6,9 @@ secret.yml
 Vagrantfile
 .vagrant
 config-root.yml
-ansible/inventory
+ansible/inventory/
 ansible/hosts
 .terraform
 *.tfstate
 *.tfstate.backup
-
+.terraform.lock.hcl

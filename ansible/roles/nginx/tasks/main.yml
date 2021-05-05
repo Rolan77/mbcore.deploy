@@ -1,9 +1,9 @@
 - name: Install nginx
-  apt: 
-    name: nginx 
+  apt:
+    name: nginx
     state: latest
     update_cache: yes
-  tags: 
+  tags:
     - install
     - ubuntu
     - nginx
@@ -22,9 +22,8 @@
 - name: start nginx
   service:
     name: nginx
-    state: started  
+    state: started
   tags:
     - init
     - ubuntu
     - nginx
-    

@@ -2,6 +2,12 @@
 resource "aws_security_group" "mbcorenode" {
   name = "mbcore"
   description = "Allow incoming HTTP connections & SSH access"
+  ingress {
+  from_port = 80
+  to_port = 80
+  protocol = "tcp"
+  cidr_blocks = ["0.0.0.0/0"]
+}
 
     ingress {
     from_port = 443

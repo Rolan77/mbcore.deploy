@@ -1,0 +1,16 @@
+moniker: "test.node" # Invent some name you will sure is unique
+localhome: "home" # Can be not changed
+chainid: "metabelarus.core.cr" # Keep it as it is
+mainuser_mnemonic: "" # Mmnemonic of your account. This account should have stake currency to run validator.
+keyring_pass: "" # Invent some password and don't share it with anyone. This is a password for keyring that stars your mnemonic on the server.
+#ansible_become_password: "yout ansible become password" # Your root or sudo user password on the machine
+#ansible_user: "root" # Your sudo user on the machine
+seeds: ""
+cert_email: "email@mail.com" # your email that the ssl certificate will be linked
+domain: "" # Set your domain name that is linked to the host. Or set localhost when you don't have one.
+host_type: "localhost" # "local" - for testing environments or when the serece has no domain name
+source_host: "" # Folder name with genesis info
+amount_to_delegate: "1000000stake" # Minimal stake to start a validator with an influence
+
+monitor_prometheus: false
+is_validator_root: false
