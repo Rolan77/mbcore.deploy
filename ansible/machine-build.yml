@@ -29,17 +29,6 @@
         name: certbot
       when: host_type == "public"
     -
-      name: install nginx
-      include_role:
-        name: nginx
-      when: host_type == "public"
-
-    -
-      name: Pull docker image
-      community.docker.docker_image:
-        name: gordon77/mbcorecrnode:latest
-        source: pull
-    -
       name: reset ssh connection
       meta: reset_connection
   vars:

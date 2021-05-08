@@ -19,8 +19,8 @@
         - node: "{{ item }}"
       include_role:
         name: node_init
-  #  - name: up service
-  #    include_role:
-  #      name: node_up
+    - name: up service
+      include_role:
+        name: node_up
     - name: reset ssh connection
       meta: reset_connection

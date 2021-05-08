@@ -48,3 +48,12 @@
     - install
     - ubuntu
     - certbot
+- name: Get certificate via certbot
+  shell: |
+      certbot certonly --standalone --noninteractive --agree-tos \
+      --email {{ cert_email }} -d {{ domain }}
+  when: host_type == "public"
+  tags:
+    - install
+    - ubuntu
+    - certbot

@@ -1,65 +1,51 @@
 ---
-- 
+-
   name: Add global variables
   include_vars:
     file: "{{ playbook_dir }}/config.yml"
-- 
+-
   name: Get validator node id
-  shell: docker run -it --name validator_id -v validator_volume:/root/.mbcorecr \
-         gordon77/mbcorecrnode:latest sh -c "mbcorecrd tendermint show-node-id" 
+  shell: docker run --rm -it  -v validator_volume:/root/.mbcorecr \
+         gordon77/mbcorecrnode:latest sh -c "mbcorecrd tendermint show-node-id"
   register: result
-- 
-  name: remove container validator_id
-  docker_container:
-    name: validator_id
-    state: absent
-    container_default_behavior: no_defaults
 -
-  set_fact: validator_id={{ result.stdout }}  
+  set_fact: validator_id={{ result.stdout }}
 
-- 
+-
   name: Get sentery node id
-  shell: docker run -it --name sentery_id -v sentery_volume:/root/.mbcorecr \
-         gordon77/mbcorecrnode:latest sh -c "mbcorecrd tendermint show-node-id" 
+  shell: docker run -it --rm -v sentery_volume:/root/.mbcorecr \
+         gordon77/mbcorecrnode:latest sh -c "mbcorecrd tendermint show-node-id"
   register: result
 -
-  set_fact: sentery_id={{ result.stdout }}  
-- 
-  name: remove container sentery_id
-  docker_container:
-    name: sentery_id
-    state: absent
-    container_default_behavior: no_defaults
+  set_fact: sentery_id={{ result.stdout }}
 
-- 
+-
   name: Create a directory if it does not exist
   ansible.builtin.file:
     path: /var/mbcore
     state: directory
     mode: '0755'
-  become: yes 
-- 
+  become: yes
+-
   name: remove  docker-compose if exist
   ansible.builtin.file:
     path: /var/mbcore/docker-compose.yml
     state: absent
-  become: yes 
-- 
+  become: yes
+-
   name: copy docker-compose
   template:
     src: docker-compose.j2
     dest: /var/mbcore/docker-compose.yml
   become: true
-- 
+-
   name: Tear down existing services
   docker_compose:
     project_src: /var/mbcore/
     state: absent
 
-- 
+-
   name: Create and start services
   docker_compose:
     project_src: /var/mbcore/
     state: present
-
-
