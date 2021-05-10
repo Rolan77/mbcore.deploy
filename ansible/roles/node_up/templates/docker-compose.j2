@@ -1,5 +1,16 @@
 version: "3.7"
 services:
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    volumes:
+     - ./nginx.conf:/etc/nginx/conf.d/default.conf
+     - /etc/letsencrypt/:/etc/letsencrypt/
+    # - /var/log/nginx/host.access.log:/var/log/nginx/host.access.log
+    ports:
+     - 80:80
+     - 443:443
+     - 1317:1317
   validator:
     image: gordon77/mbcorecrnode:latest
     container_name: validator
@@ -19,6 +30,7 @@ services:
     restart: always
     volumes:
       - sentery_volume:/root/.mbcorecr
+      - /etc/letsencrypt/:/etc/letsencrypt/
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     ports:

@@ -106,7 +106,7 @@ enable = "{{ template_node.api_enable }}"
 swagger = true
 
 # Address defines the API server to listen on.
-address = "tcp://0.0.0.0:{{ template_node.tcp_port }}"
+address = "tcp://0.0.0.0:1317"
 
 # MaxOpenConnections defines the number of maximum open connections.
 max-open-connections = 1000
@@ -133,7 +133,7 @@ enabled-unsafe-cors = "{{ template_node.enabled_unsafe_cors }}"
 enable = "{{ template_node.grpc_enable }}"
 
 # Address defines the gRPC server address to bind to.
-address = "0.0.0.0:{{ template_node.grpc_port }}"
+address = "127.0.0.1:{{ template_node.grpc_port }}"
 
 ###############################################################################
 ###                        State Sync Configuration                         ###

@@ -39,6 +39,18 @@
     dest: /var/mbcore/docker-compose.yml
   become: true
 -
+  name: remove  nginx.conf if exist
+  ansible.builtin.file:
+    path: /var/mbcore/nginx.conf
+    state: absent
+  become: yes
+-
+  name: copy nginx.conf
+  copy:
+    src: nginx.conf
+    dest: /var/mbcore/nginx.conf
+  become: true
+-
   name: Tear down existing services
   docker_compose:
     project_src: /var/mbcore/

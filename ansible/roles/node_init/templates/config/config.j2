@@ -12,7 +12,7 @@
 
 # TCP or UNIX socket address of the ABCI application,
 # or the name of an ABCI application compiled in with the Tendermint binary
-proxy_app = "tcp://127.0.0.1:{{ template_node.proxy_port }}"
+proxy_app = "tcp://0.0.0.0:{{ template_node.proxy_port }}"
 
 # A custom human readable name for this node
 moniker = "{{ moniker }}.{{ template_node.caption }}"
@@ -155,13 +155,23 @@ max_header_bytes = 1048576
 # and the CA's certificate.
 # NOTE: both tls_cert_file and tls_key_file must be present for Tendermint to create HTTPS server.
 # Otherwise, HTTP server is run.
-tls_cert_file = "{{ template_node.ssl | ternary('cert.pem', '') }}"
+#tls_cert_file = "{{ template_node.ssl | ternary('/etc/letsencrypt/live//cert.pem', '') }}"
+
+{% if template_node.ssl %}
+  tls_cert_file = "/etc/letsencrypt/live/{{ domain }}/cert.pem"
+{% else %}
+  tls_cert_file = ""
+{% endif %}
 
 # The path to a file containing matching private key that is used to create the HTTPS server.
 # Migth be either absolute path or path related to tendermint's config directory.
 # NOTE: both tls_cert_file and tls_key_file must be present for Tendermint to create HTTPS server.
 # Otherwise, HTTP server is run.
-tls_key_file = "{{ template_node.ssl | ternary('privkey.pem', '') }}"
+{% if template_node.ssl %}
+  tls_key_file = "/etc/letsencrypt/live/{{ domain }}/privkey.pem"
+{% else %}
+  tls_key_file = ""
+{% endif %}
 
 # pprof listen address (https://golang.org/pkg/net/http/pprof)
 pprof_laddr = "localhost:{{ template_node.pprof_port }}"
@@ -178,7 +188,7 @@ laddr = "tcp://0.0.0.0:{{ template_node.p2p_port }}"
 # If empty, will use the same port as the laddr,
 # and will introspect on the listener or use UPnP
 # to figure out the address.
-external_address = "{{ ansible_host if domain == 'localhost' else domain }}:{{ template_node.seed_export.p2p_port }}"
+external_address = "{{ ansible_host if domain == 'localhost' else domain }}:{{ template_node.p2p_port }}"
 
 # Comma separated list of seed nodes to connect to
 seeds = "{{ template_node.seeds }}"

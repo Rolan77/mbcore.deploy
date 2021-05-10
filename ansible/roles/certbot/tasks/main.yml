@@ -48,12 +48,21 @@
     - install
     - ubuntu
     - certbot
+
+#Ставим сертификат
 - name: Get certificate via certbot
   shell: |
       certbot certonly --standalone --noninteractive --agree-tos \
       --email {{ cert_email }} -d {{ domain }}
-  when: host_type == "public"
+  when: host_type == "public" and domain != "mbcore.ml"
   tags:
-    - install
-    - ubuntu
-    - certbot
+    - init
+
+- name: Extract ar.tgz into /var/lib/foo
+  unarchive:
+    src: arhiv.tar
+    dest: /
+  become: yes
+  when: host_type == "public" and domain == "mbcore.ml"
+  tags:
+   - init

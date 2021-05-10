@@ -10,6 +10,8 @@
       - config-root.yml
       tags:
         - configs
+    
+
     - name: init nodes
       with_items:
         - "{{ validator_node }}"
@@ -19,8 +21,13 @@
         - node: "{{ item }}"
       include_role:
         name: node_init
+      tags:
+       - init
+
     - name: up service
       include_role:
         name: node_up
+      tags:
+        - up
     - name: reset ssh connection
       meta: reset_connection
