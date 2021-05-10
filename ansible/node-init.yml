@@ -1,6 +1,7 @@
 - name: init node on a machine
   hosts:
     - stage_aws
+  become: yes
   tasks:
     - name: Add global variables
       include_vars:
@@ -10,7 +11,7 @@
       - config-root.yml
       tags:
         - configs
-    
+
 
     - name: init nodes
       with_items:
@@ -29,5 +30,10 @@
         name: node_up
       tags:
         - up
+    - name: up monitoring
+      include_role:
+        name: influx
+      tags:
+        - monitor
     - name: reset ssh connection
       meta: reset_connection

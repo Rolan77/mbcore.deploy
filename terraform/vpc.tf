@@ -50,6 +50,12 @@ resource "aws_security_group" "mbcorenode" {
     cidr_blocks =  ["0.0.0.0/0"]
   }
   ingress {
+    from_port = 8086
+    to_port = 8086
+    protocol = "tcp"
+    cidr_blocks =  ["0.0.0.0/0"]
+  }
+  ingress {
     from_port = 9090
     to_port = 9090
     protocol = "tcp"

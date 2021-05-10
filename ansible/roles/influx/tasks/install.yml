@@ -1,0 +1,37 @@
+- name: Add global variables
+  include_vars:
+    file: "{{ playbook_dir }}/config.yml"
+
+- name: prevent docker related crashes in some cases
+  apt:
+    name:
+      - docker-compose
+    state: present
+    update_cache: yes
+
+- name: copy files
+  copy:
+    src: .
+    dest: "/var/mbcore/"
+
+- name: copy telegraf.conf
+  template:
+    src: telegraf.j2
+    dest: "/var/mbcore/telegraf.conf"
+
+- name: copy init.sh
+  template:
+    src: init.j2
+    dest: "/var/mbcore/init/init.sh"
+
+- name: Tear down existing services
+  docker_compose:
+    project_src: "/var/mbcore/"
+    state: absent
+    files: docker-compose-mon.yml
+
+- name: Create and start services
+  docker_compose:
+    project_src: "/var/mbcore/"
+    files: docker-compose-mon.yml
+    state: present

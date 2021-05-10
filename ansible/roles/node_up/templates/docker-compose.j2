@@ -11,6 +11,8 @@ services:
      - 80:80
      - 443:443
      - 1317:1317
+    networks:
+      - mbcore-network
   validator:
     image: gordon77/mbcorecrnode:latest
     container_name: validator
@@ -20,6 +22,8 @@ services:
       - validator_volume:/root/.mbcorecr
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
+    networks:
+     - mbcore-network
   sentery:
     image: gordon77/mbcorecrnode:latest
     container_name: sentery
@@ -36,6 +40,9 @@ services:
     ports:
       - "{{ sentery_node.p2p_port }}:{{ sentery_node.p2p_port }}"
       - "{{ sentery_node.rpc_port }}:{{ sentery_node.rpc_port }}"
+    networks:
+     - mbcore-network
+
 #  seed:
 #    image: gordon77/mbcorecrnode:latest
 #    container_name: seed
@@ -57,3 +64,5 @@ volumes:
     external: true
 #  seed_volume:
 #    external: true
+networks:
+ mbcore-network:

@@ -1,0 +1,7 @@
+---
+# defaults file for influx
+influx_token: WtklzfDL7pTfgc4O79jgLPeZpEx62yoj7f2m_K0NcTyOylNvjAMUtDialLLv0wMPAiwWCCe3UyFs6XWH3Vbi5w==
+influx_organisation: mbcore
+influx_bucket: mbcore_bucket
+influx_user_name: rolan77
+influx_user_password: 4682fthb
